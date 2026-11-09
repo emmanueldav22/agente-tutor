@@ -21,7 +21,7 @@
     <div id="chat-container">
         <div id="chat-box"></div>
         <div class="input-group">
-            <input type="text" id="userInput" placeholder="Escribe tu pregunta...">
+            <input type="text" id="userInput" placeholder="Escribe tu pregunta..." onkeypress="if(event.key === 'KeyE' || event.key === 'Enter') enviarMensaje()">
             <button onclick="enviarMensaje()">Enviar</button>
         </div>
     </div>
@@ -37,13 +37,15 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                // PEGA TU URL DE PRODUCCIÓN DE N8N ABAJO ENTRE LAS COMILLAS
                 const urlWebhook = "https://emmanueldav.app.n8n.cloud/webhook/470fec46-a648-441e-bb6c-3e2e135541c8";
                 
                 const respuesta = await fetch(urlWebhook, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chatInput: texto })
+                    body: JSON.stringify({ 
+                        chatInput: texto,
+                        sessionId: 'session_1'
+                    })
                 });
                 const data = await respuesta.json();
                 const respuestaBot = data.output || data.text || JSON.stringify(data);
